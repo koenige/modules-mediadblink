@@ -20,7 +20,7 @@
  * @param string $category
  * @param mixed $ids
  */
-function mf_mediadblink_media($event, $folder, $category, $ids = []) {
+function mf_mediadblink_media($event, $folder, $category = '', $ids = []) {
 	global $zz_setting;
 	$zz_setting['brick_cms_input'] = 'json';
 	$url = sprintf($zz_setting['mediadblink_website'], $event, $folder);
@@ -33,12 +33,13 @@ function mf_mediadblink_media($event, $folder, $category, $ids = []) {
 	$matches = [];
 	foreach ($media as $medium) {
 		foreach ($medium['meta'] as $meta) {
-			if (!in_array($meta['foreign_key'], $foreign_keys)) continue;
-			if ($meta['category_identifier'] !== $category) continue;
+			if ($foreign_keys AND !in_array($meta['foreign_key'], $foreign_keys)) continue;
+			if ($category AND $meta['category_identifier'] !== $category) continue;
 			if (empty($medium['base_filename'])) {
 				wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
 			}
-			$matches[$meta['foreign_key']] = $medium;
+			$key = $foreign_keys ? $meta['foreign_key'] : $medium['object_id'];
+			$matches[$key] = $medium;
 		}
 	}
 	return $matches;
