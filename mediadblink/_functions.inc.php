@@ -35,7 +35,8 @@ function mf_mediadblink_media($event, $folder, $category = '', $ids = []) {
 		foreach ($medium['meta'] as $meta) {
 			if ($foreign_keys AND !in_array($meta['foreign_key'], $foreign_keys)) continue;
 			if ($category AND $meta['category_identifier'] !== $category) continue;
-			if (empty($medium['base_filename'])) {
+			if (empty($medium['base_filename'])
+				AND !in_array($medium['category'], ['folder', 'publication'])) {
 				wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
 			}
 			$key = $foreign_keys ? $meta['foreign_key'] : $medium['object_id'];
