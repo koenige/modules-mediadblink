@@ -17,7 +17,7 @@ function mod_mediadblink_get_persons($vars) {
 			, identifier AS `objects[identifier]`
 			, "Personen" AS `objects[path]`
 			, "person" AS `objects[category]`
-			, IF(geschlecht = "weiblich", "woman", IF(geschlecht = "männlich", "man", NULL)) AS `objects[subcategory]`
+			, IF(sex = "female", "woman", IF(sex = "male", "man", NULL)) AS `objects[subcategory]`
 			, contact AS `objects[title][---]`
 			, identifier AS `objects[title][-id]`
 		FROM personen
