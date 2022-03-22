@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2016-2017, 2019-2021 Gustaf Mossakowski
+ * @copyright Copyright © 2016-2017, 2019-2022 Gustaf Mossakowski
  */
 
 
@@ -49,7 +49,7 @@ function mod_mediadblink_get_usergroups_orga() {
 		FROM usergroups
 		JOIN teilnahmen USING (usergroup_id)
 		JOIN events USING (event_id)
-		JOIN personen USING (person_id)
+		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen
@@ -78,7 +78,7 @@ function mod_mediadblink_get_usergroups_gremien() {
 			
 		FROM usergroups
 		JOIN teilnahmen USING (usergroup_id)
-		JOIN personen USING (person_id)
+		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		WHERE usergroups.usergroup_category_id = %d
 		AND (ISNULL(teilnahmen.date_end)
@@ -136,7 +136,7 @@ function mod_mediadblink_get_usergroups_teilnehmer($key) {
 		FROM usergroups
 		JOIN teilnahmen USING (usergroup_id)
 		JOIN events USING (event_id)
-		JOIN personen USING (person_id)
+		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen

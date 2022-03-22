@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014-2015, 2019, 2021 Gustaf Mossakowski
+ * @copyright Copyright © 2014-2015, 2019, 2021-2022 Gustaf Mossakowski
  */
 
 
@@ -20,7 +20,7 @@ function mod_mediadblink_get_persons($vars) {
 			, IF(sex = "female", "woman", IF(sex = "male", "man", NULL)) AS `objects[subcategory]`
 			, contact AS `objects[title][---]`
 			, identifier AS `objects[title][-id]`
-		FROM personen
+		FROM persons
 		JOIN teilnahmen USING (person_id)
 		JOIN contacts USING (contact_id)
 		WHERE first_name != "unbekannt" AND last_name != "unbekannt"';
