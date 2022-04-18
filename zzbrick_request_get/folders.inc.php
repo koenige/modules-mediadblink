@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014, 2016-2017, 2019-2021 Gustaf Mossakowski
+ * @copyright Copyright © 2014, 2016-2017, 2019-2022 Gustaf Mossakowski
  */
 
 
@@ -32,7 +32,7 @@ function mod_mediadblink_get_folders($vars) {
 			, CONCAT(contact_abbr, "/", events.identifier) AS `objects[path]`
 			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "einzel" OR SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, 0) AS spieler
 			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, 0) AS teams
-			, (SELECT COUNT(teilnahme_id) FROM teilnahmen WHERE teilnahmen.event_id = events.event_id AND usergroup_id IN (%s)) AS team
+			, (SELECT COUNT(*) FROM teilnahmen WHERE teilnahmen.event_id = events.event_id AND usergroup_id IN (%s)) AS team
 		FROM events
 		LEFT JOIN categories
 			ON events.event_category_id = categories.category_id

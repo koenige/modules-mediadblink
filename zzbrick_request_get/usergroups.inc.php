@@ -34,13 +34,13 @@ function mod_mediadblink_get_usergroups_orga() {
 			, usergroup AS `objects[title][deu]`
 			, "group" AS `objects[category]`
 
-			, teilnahme_id AS `objectrelations[foreign_key]`
+			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/Team/", usergroups.identifier) AS `objectrelations[parent_object]`
 			, CONCAT("Personen/", contacts.identifier) AS `objectrelations[child_object]`
 			, "" AS `objectrelations[role_property]`
 
-			, teilnahme_id AS `access_rights[foreign_key]`
+			, participation_id AS `access_rights[foreign_key]`
 			, "yes" AS `access_rights[show_access]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier) AS `access_rights[object]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/Team/", usergroups.identifier) AS `access_rights[group_object]`
@@ -56,7 +56,7 @@ function mod_mediadblink_get_usergroups_orga() {
 			ON websites.contact_id = organisationen.contact_id
 		WHERE usergroups.usergroup_category_id = %d
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
-		ORDER BY event_id, usergroup_id, teilnahme_id';
+		ORDER BY event_id, usergroup_id, participation_id';
 	$sql = sprintf($sql, wrap_category_id('gruppen/organisatoren'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
@@ -70,7 +70,7 @@ function mod_mediadblink_get_usergroups_gremien() {
 			, usergroup AS `objects[title][deu]`
 			, "group" AS `objects[category]`
 
-			, teilnahme_id AS `objectrelations[foreign_key]`
+			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`
 			, CONCAT("Gruppen/", usergroups.identifier) AS `objectrelations[parent_object]`
 			, CONCAT("Personen/", contacts.identifier) AS `objectrelations[child_object]`
@@ -86,7 +86,7 @@ function mod_mediadblink_get_usergroups_gremien() {
 			, INTERVAL IFNULL(SUBSTRING_INDEX(SUBSTRING_INDEX(usergroups.parameters, "transition_days=", -1), "&", 1), 0) DAY
 			) > CURDATE()
 		)
-		ORDER BY usergroup_id, teilnahme_id';
+		ORDER BY usergroup_id, participation_id';
 	$sql = sprintf($sql, wrap_category_id('gruppen/gremien'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
@@ -99,25 +99,25 @@ function mod_mediadblink_get_usergroups_teilnehmer($key) {
 			, IF(usergroup = "Referent", "Referenten", usergroup) AS `objects[title][deu]`
 			, "group" AS `objects[category]`
 
-			, teilnahme_id AS `objectrelations[foreign_key]`
+			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/", IF(usergroup = "Referent", "Referenten", usergroup)) AS `objectrelations[parent_object]`
 			, CONCAT("Personen/", contacts.identifier) AS `objectrelations[child_object]`
 			, "" AS `objectrelations[role_property]`
 
-			, teilnahme_id AS `access_rights[0][foreign_key]`
+			, participation_id AS `access_rights[0][foreign_key]`
 			, "yes" AS `access_rights[0][show_access]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier) AS `access_rights[0][object]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/", IF(usergroup = "Referent", "Referenten", usergroup)) AS `access_rights[0][group_object]`
 			, "list" AS `access_rights[0][access_right_property]`
 
-			, CONCAT(teilnahme_id, "-2") AS `access_rights[1][foreign_key]`
+			, CONCAT(participation_id, "-2") AS `access_rights[1][foreign_key]`
 			, "no" AS `access_rights[1][show_access]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/Materialien") AS `access_rights[1][object]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/", IF(usergroup = "Referent", "Referenten", usergroup)) AS `access_rights[1][group_object]`
 			, IF(usergroup = "Referent", "delete-own", "read") AS `access_rights[1][access_right_property]`
 
-			, CONCAT(teilnahme_id, "-3") AS `access_rights[2][foreign_key]`
+			, CONCAT(participation_id, "-3") AS `access_rights[2][foreign_key]`
 			, "no" AS `access_rights[2][show_access]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/Photos") AS `access_rights[2][object]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/", IF(usergroup = "Referent", "Referenten", usergroup)) AS `access_rights[2][group_object]`
@@ -143,7 +143,7 @@ function mod_mediadblink_get_usergroups_teilnehmer($key) {
 			ON websites.contact_id = organisationen.contact_id
 		WHERE usergroups.usergroup_id = %d
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
-		ORDER BY event_id, usergroup_id, teilnahme_id';
+		ORDER BY event_id, usergroup_id, participation_id';
 	$sql = sprintf($sql, wrap_id('usergroups', $key));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
