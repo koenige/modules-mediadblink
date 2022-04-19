@@ -47,7 +47,7 @@ function mod_mediadblink_get_usergroups_orga() {
 			, "delete" AS `access_rights[access_right_property]`
 			
 		FROM usergroups
-		JOIN teilnahmen USING (usergroup_id)
+		JOIN participations USING (usergroup_id)
 		JOIN events USING (event_id)
 		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
@@ -77,12 +77,12 @@ function mod_mediadblink_get_usergroups_gremien() {
 			, "" AS `objectrelations[role_property]`
 			
 		FROM usergroups
-		JOIN teilnahmen USING (usergroup_id)
+		JOIN participations USING (usergroup_id)
 		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		WHERE usergroups.usergroup_category_id = %d
-		AND (ISNULL(teilnahmen.date_end)
-			OR DATE_ADD(teilnahmen.date_end
+		AND (ISNULL(participations.date_end)
+			OR DATE_ADD(participations.date_end
 			, INTERVAL IFNULL(SUBSTRING_INDEX(SUBSTRING_INDEX(usergroups.parameters, "transition_days=", -1), "&", 1), 0) DAY
 			) > CURDATE()
 		)
@@ -134,7 +134,7 @@ function mod_mediadblink_get_usergroups_teilnehmer($key) {
 			, CONCAT(event_id, "-", usergroup_id, "-2") AS `folder_settings[1][foreign_key]`
 
 		FROM usergroups
-		JOIN teilnahmen USING (usergroup_id)
+		JOIN participations USING (usergroup_id)
 		JOIN events USING (event_id)
 		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
