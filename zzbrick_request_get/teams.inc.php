@@ -14,7 +14,7 @@
 
 function mod_mediadblink_get_teams($vars) {
 	$sql = 'SELECT team_id AS `objects[foreign_key]`
-			, SUBSTRING_INDEX(teams.kennung, "/", -1) AS `objects[identifier]`
+			, SUBSTRING_INDEX(teams.identifier, "/", -1) AS `objects[identifier]`
 			, CONCAT(contact_abbr, "/", events.identifier, "/Teams") AS `objects[path]`
 			, CONCAT(teams.team, IFNULL(CONCAT(" ", team_no), "")) AS `objects[title][deu]`
 			, "group" AS `objects[category]`
