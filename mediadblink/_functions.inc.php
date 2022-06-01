@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2021 Gustaf Mossakowski
+ * @copyright Copyright © 2021-2022 Gustaf Mossakowski
  */
 
 
@@ -36,7 +36,9 @@ function mf_mediadblink_media($event, $folder, $category = '', $ids = []) {
 			if ($foreign_keys AND !in_array($meta['foreign_key'], $foreign_keys)) continue;
 			if ($category AND $meta['category_identifier'] !== $category) continue;
 			if (empty($medium['base_filename'])
-				AND !in_array($medium['category'], ['folder', 'publication'])) {
+				AND !in_array($medium['category'], ['folder', 'publication'])
+				AND !in_array($medium['filetype'], ['xlsx', 'xls', 'docx', 'doc', 'pdf'])
+			) {
 				wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
 			}
 			$key = $foreign_keys ? $meta['foreign_key'] : $medium['object_id'];
