@@ -21,7 +21,7 @@ function mod_mediadblink_get_persons($vars) {
 			, contact AS `objects[title][---]`
 			, identifier AS `objects[title][-id]`
 		FROM persons
-		JOIN participations USING (person_id)
+		JOIN participations USING (contact_id)
 		JOIN contacts USING (contact_id)
 		WHERE first_name != "unbekannt" AND last_name != "unbekannt"';
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]');

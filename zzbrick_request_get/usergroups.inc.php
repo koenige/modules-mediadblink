@@ -49,7 +49,6 @@ function mod_mediadblink_get_usergroups_orga() {
 		FROM usergroups
 		JOIN participations USING (usergroup_id)
 		JOIN events USING (event_id)
-		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen
@@ -78,7 +77,6 @@ function mod_mediadblink_get_usergroups_gremien() {
 			
 		FROM usergroups
 		JOIN participations USING (usergroup_id)
-		JOIN persons USING (person_id)
 		JOIN contacts USING (contact_id)
 		WHERE usergroups.usergroup_category_id = %d
 		AND (ISNULL(participations.date_end)
@@ -136,7 +134,7 @@ function mod_mediadblink_get_usergroups_teilnehmer($key) {
 		FROM usergroups
 		JOIN participations USING (usergroup_id)
 		JOIN events USING (event_id)
-		JOIN persons USING (person_id)
+		JOIN persons USING (contact_id)
 		JOIN contacts USING (contact_id)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen
