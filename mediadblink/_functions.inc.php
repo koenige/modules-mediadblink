@@ -13,7 +13,7 @@
 
 
 /**
- * get media from media database
+ * get media from media database, public website folder
  *
  * @param mixed $identifier (string or array)
  * @param array $filter (optional) direct filter on database export, e. g. meta=something
@@ -21,6 +21,20 @@
  * @param mixed $ids (optional) restrict results to foreign key IDs
  */
 function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = []) {
+	if (!is_array($identifier)) $identifier = [$identifier];
+	array_unshift($identifier, wrap_get_setting('mediadblink_public_website_path'));
+	return mf_mediadblink_media_get($identifier, $filter, $category, $ids);
+}
+
+/**
+ * get media from media database
+ *
+ * @param mixed $identifier (string or array)
+ * @param array $filter (optional) direct filter on database export, e. g. meta=something
+ * @param string $category (optional) restrict results to category_identifier of meta data
+ * @param mixed $ids (optional) restrict results to foreign key IDs
+ */
+function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $ids = []) {
 	global $zz_setting;
 
 	// @todo read corresponding value from languages table
