@@ -16,10 +16,11 @@
  * get media from media database
  *
  * @param mixed $identifier (string or array)
- * @param string $category
- * @param mixed $ids
+ * @param array $filter (optional) direct filter on database export, e. g. meta=something
+ * @param string $category (optional) restrict results to category_identifier of meta data
+ * @param mixed $ids (optional) restrict results to foreign key IDs
  */
-function mf_mediadblink_media($identifier, $category = '', $ids = []) {
+function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = []) {
 	global $zz_setting;
 
 	// @todo read corresponding value from languages table
@@ -31,9 +32,8 @@ function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
 	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix'))
 		$identifier = sprintf('%s/%s', $identifier_prefix, $identifier);
-	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3);
-//	@todo
-// 	$url .=  '?meta=*'.$event['identifier'];
+	$filter = $filter ? '&'.http_build_query($filter) : '';
+	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3, $filter);
 
 	$settings = [];
 	require_once $zz_setting['core'].'/syndication.inc.php';
