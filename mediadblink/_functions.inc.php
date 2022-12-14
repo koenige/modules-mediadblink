@@ -21,9 +21,16 @@
  */
 function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 	global $zz_setting;
+
+	// @todo read corresponding value from languages table
+	switch ($zz_setting['lang']) {
+		case 'de': $lang3 = 'deu'; break;
+		case 'en': default: $lang3 = 'eng'; break;
+	}
+
 	$zz_setting['brick_cms_input'] = 'json';
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
-	$url = sprintf($zz_setting['mediadblink_website'], $identifier);
+	$url = sprintf($zz_setting['mediadblink_website'], $identifier, $lang3);
 //	@todo
 // 	$url .=  '?meta=*'.$event['identifier'];
 	$media = brick_request_external($url, $zz_setting);
