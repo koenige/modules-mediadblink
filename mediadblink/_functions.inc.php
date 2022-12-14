@@ -32,8 +32,6 @@ function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
 	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix'))
 		$identifier = sprintf('%s/%s', $identifier_prefix, $identifier);
-	if (wrap_get_setting('local_access') AND wrap_get_setting('mediadblink_use_local'))
-		$zz_setting['mediadblink_server'] = wrap_get_setting('mediadblink_server_local');
 	// @todo add https to settings.cfg
 	$url = 'https://'.sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3);
 //	@todo
