@@ -32,8 +32,7 @@ function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
 	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix'))
 		$identifier = sprintf('%s/%s', $identifier_prefix, $identifier);
-	// @todo add https to settings.cfg
-	$url = 'https://'.sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3);
+	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3);
 //	@todo
 // 	$url .=  '?meta=*'.$event['identifier'];
 	$media = brick_request_external($url, $zz_setting);
