@@ -28,14 +28,16 @@ function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 		case 'en': default: $lang3 = 'eng'; break;
 	}
 
-	$zz_setting['brick_cms_input'] = 'json';
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
 	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix'))
 		$identifier = sprintf('%s/%s', $identifier_prefix, $identifier);
 	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3);
 //	@todo
 // 	$url .=  '?meta=*'.$event['identifier'];
-	$media = brick_request_external($url, $zz_setting);
+
+	$settings = [];
+	require_once $zz_setting['core'].'/syndication.inc.php';
+	$media = wrap_syndication_get($url, 'json', $settings);
 	unset($media['_']); // metadata
 
 	$foreign_keys = !is_array($ids) ? [$ids] : $ids;
