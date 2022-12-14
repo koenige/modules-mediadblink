@@ -15,15 +15,15 @@
 /**
  * get media from media database
  *
- * @param string $event
- * @param string $folder
+ * @param mixed $identifier (string or array)
  * @param string $category
  * @param mixed $ids
  */
-function mf_mediadblink_media($event, $folder, $category = '', $ids = []) {
+function mf_mediadblink_media($identifier, $category = '', $ids = []) {
 	global $zz_setting;
 	$zz_setting['brick_cms_input'] = 'json';
-	$url = sprintf($zz_setting['mediadblink_website'], $event, $folder);
+	if (is_array($identifier)) $identifier = implode('/', $identifier);
+	$url = sprintf($zz_setting['mediadblink_website'], $identifier);
 //	@todo
 // 	$url .=  '?meta=*'.$event['identifier'];
 	$media = brick_request_external($url, $zz_setting);
