@@ -46,17 +46,28 @@ function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = 
 		foreach ($medium['meta'] as $meta) {
 			if ($foreign_keys AND !in_array($meta['foreign_key'], $foreign_keys)) continue;
 			if ($category AND $meta['category_identifier'] !== $category) continue;
-			if (empty($medium['base_filename'])
-				AND !in_array($medium['category'], ['folder', 'publication'])
-				AND !in_array($medium['filetype'], ['xlsx', 'xls', 'docx', 'doc', 'pdf', 'odt', 'pptx', 'cbv'])
-			) {
-				wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
-			}
+			if (empty($medium['base_filename']))
+				mf_mediadblink_media_report_missing($medium);
 			$key = $foreign_keys ? $meta['foreign_key'] : $medium['object_id'];
 			$matches[$key] = $medium;
+			continue 2; // might be more than one meta object
 		}
 	}
 	return $matches;
+}
+
+/**
+ * report if a medium is missing
+ *
+ * @param array $medium
+ * @return void
+ */
+function mf_mediadblink_media_report_missing($medium) {
+	if (in_array($medium['category'], wrap_get_setting('mediadblink_no_preview_categories'))) return;
+	$filetype_def = wrap_filetypes($medium['filetype']);
+	if (empty($filetype_def['thumbnail'])) return;
+
+	wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
 }
 
 /**
