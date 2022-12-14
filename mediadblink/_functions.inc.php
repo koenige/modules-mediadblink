@@ -58,3 +58,24 @@ function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = 
 	}
 	return $matches;
 }
+
+/**
+ * get sizes for thumbnail images depending on image, dimension and size
+ *
+ * @param array $image
+ * @param string $dimension (width, height)
+ * @return string
+ */
+function mf_mediadblink_image_size($image, $dimension) {
+	$size = substr($image['large_filename'], strrpos($image['large_filename'], '.') + 1);
+	if (!is_numeric($size)) return '';
+	switch ($dimension) {
+	case 'width':
+		if ($image['image_ratio'] >= 1) return $size;
+		return round($size / $image['image_ratio']);
+	case 'height':
+		if ($image['image_ratio'] < 1) return $size;
+		return round($size / $image['image_ratio']);
+	}
+	return '';
+}
