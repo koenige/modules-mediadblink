@@ -50,6 +50,11 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
 	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3, $filter);
 
 	$settings = [];
+	if (!str_starts_with($identifier, wrap_get_setting('mediadblink_public_website_path').'/')) {
+		$settings['headers_to_send'][] = sprintf('Authorization: Bearer %s'
+			, wrap_get_setting('mediadblink_access_token')
+		);
+	}
 	require_once $zz_setting['core'].'/syndication.inc.php';
 	$media = wrap_syndication_get($url, 'json', $settings);
 	unset($media['_']); // metadata
