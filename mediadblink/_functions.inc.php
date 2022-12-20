@@ -44,8 +44,11 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
 	}
 
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
-	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix'))
-		$identifier = sprintf('%s/%s', $identifier_prefix, $identifier);
+	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix')) {
+		$identifier = explode('/', $identifier);
+		array_splice($identifier, 1, 0, [$identifier_prefix]);
+		$identifier = implode('/', $identifier);
+	}
 	$filter = $filter ? '&'.http_build_query($filter) : '';
 	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3, $filter);
 
