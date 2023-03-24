@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2021-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2021-2023 Gustaf Mossakowski
  */
 
 
@@ -22,7 +22,7 @@
  */
 function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = []) {
 	if (!is_array($identifier)) $identifier = [$identifier];
-	array_unshift($identifier, wrap_get_setting('mediadblink_public_website_path'));
+	array_unshift($identifier, wrap_setting('mediadblink_public_website_path'));
 	return mf_mediadblink_media_get($identifier, $filter, $category, $ids);
 }
 
@@ -35,30 +35,28 @@ function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = 
  * @param mixed $ids (optional) restrict results to foreign key IDs
  */
 function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $ids = []) {
-	global $zz_setting;
-
 	// @todo read corresponding value from languages table
-	switch ($zz_setting['lang']) {
+	switch (wrap_setting('lang')) {
 		case 'de': $lang3 = 'deu'; break;
 		case 'en': default: $lang3 = 'eng'; break;
 	}
 
 	if (is_array($identifier)) $identifier = implode('/', $identifier);
-	if ($identifier_prefix = wrap_get_setting('mediadblink_export_url_identifier_prefix')) {
+	if ($identifier_prefix = wrap_setting('mediadblink_export_url_identifier_prefix')) {
 		$identifier = explode('/', $identifier);
 		array_splice($identifier, 1, 0, [$identifier_prefix]);
 		$identifier = implode('/', $identifier);
 	}
 	$filter = $filter ? '&'.http_build_query($filter) : '';
-	$url = sprintf(wrap_get_setting('mediadblink_export_url'), $identifier, $lang3, $filter);
+	$url = sprintf(wrap_setting('mediadblink_export_url'), $identifier, $lang3, $filter);
 
 	$settings = [];
-	if (!str_starts_with($identifier, wrap_get_setting('mediadblink_public_website_path').'/')) {
+	if (!str_starts_with($identifier, wrap_setting('mediadblink_public_website_path').'/')) {
 		$settings['headers_to_send'][] = sprintf('Authorization: Bearer %s'
-			, wrap_get_setting('mediadblink_access_token')
+			, wrap_setting('mediadblink_access_token')
 		);
 	}
-	require_once $zz_setting['core'].'/syndication.inc.php';
+	require_once wrap_setting('core').'/syndication.inc.php';
 	$media = wrap_syndication_get($url, 'json', $settings);
 	unset($media['_']); // metadata
 
@@ -85,7 +83,7 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
  * @return void
  */
 function mf_mediadblink_media_report_missing($medium) {
-	if (in_array($medium['category'], wrap_get_setting('mediadblink_no_preview_categories'))) return;
+	if (in_array($medium['category'], wrap_setting('mediadblink_no_preview_categories'))) return;
 	$filetype_def = wrap_filetypes($medium['filetype']);
 	if (empty($filetype_def['thumbnail'])) return;
 

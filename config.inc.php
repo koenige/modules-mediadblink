@@ -8,9 +8,9 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2022 Gustaf Mossakowski
+ * @copyright Copyright © 2022-2023 Gustaf Mossakowski
  */
 
 
-if (wrap_get_setting('local_access') AND wrap_get_setting('mediadblink_use_local'))
-	$zz_setting['mediadblink_server'] = wrap_get_setting('mediadblink_server_local');
+if (wrap_setting('local_access') AND wrap_setting('mediadblink_use_local'))
+	wrap_setting('mediadblink_server', wrap_setting('mediadblink_server_local'));
