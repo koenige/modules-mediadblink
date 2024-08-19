@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadblink
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2021-2023 Gustaf Mossakowski
+ * @copyright Copyright © 2021-2024 Gustaf Mossakowski
  */
 
 
@@ -59,6 +59,7 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
 	require_once wrap_setting('core').'/syndication.inc.php';
 	$media = wrap_syndication_get($url, 'json', $settings);
 	unset($media['_']); // metadata
+	if (!$media) return [];
 
 	$foreign_keys = !is_array($ids) ? [$ids] : $ids;
 	$matches = [];
