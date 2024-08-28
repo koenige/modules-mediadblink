@@ -17,13 +17,13 @@
  *
  * @param mixed $identifier (string or array)
  * @param array $filter (optional) direct filter on database export, e. g. meta=something
- * @param string $category (optional) restrict results to category_identifier of meta data
+ * @param string $class (optional) restrict results to class_identifier of meta data
  * @param mixed $ids (optional) restrict results to foreign key IDs
  */
-function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = []) {
+function mf_mediadblink_media($identifier, $filter = [], $class = '', $ids = []) {
 	if (!is_array($identifier)) $identifier = [$identifier];
 	array_unshift($identifier, wrap_setting('mediadblink_public_website_path'));
-	return mf_mediadblink_media_get($identifier, $filter, $category, $ids);
+	return mf_mediadblink_media_get($identifier, $filter, $class, $ids);
 }
 
 /**
@@ -31,10 +31,10 @@ function mf_mediadblink_media($identifier, $filter = [], $category = '', $ids = 
  *
  * @param mixed $identifier (string or array)
  * @param array $filter (optional) direct filter on database export, e. g. meta=something
- * @param string $category (optional) restrict results to category_identifier of meta data
+ * @param string $class (optional) restrict results to class_identifier of meta data
  * @param mixed $ids (optional) restrict results to foreign key IDs
  */
-function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $ids = []) {
+function mf_mediadblink_media_get($identifier, $filter = [], $class = '', $ids = []) {
 	// @todo read corresponding value from languages table
 	switch (wrap_setting('lang')) {
 		case 'de': $lang3 = 'deu'; break;
@@ -66,7 +66,7 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
 	foreach ($media as $medium) {
 		foreach ($medium['meta'] as $meta) {
 			if ($foreign_keys AND !in_array($meta['foreign_key'], $foreign_keys)) continue;
-			if ($category AND $meta['category_identifier'] !== $category) continue;
+			if ($class AND $meta['class_identifier'] !== $class) continue;
 			if (empty($medium['base_filename']))
 				mf_mediadblink_media_report_missing($medium);
 			$key = $foreign_keys ? $meta['foreign_key'] : $medium['object_id'];
@@ -84,7 +84,7 @@ function mf_mediadblink_media_get($identifier, $filter = [], $category = '', $id
  * @return void
  */
 function mf_mediadblink_media_report_missing($medium) {
-	if (in_array($medium['category'], wrap_setting('mediadblink_no_preview_categories'))) return;
+	if (in_array($medium['class_identifier'], wrap_setting('mediadblink_no_preview_classes'))) return;
 	$filetype_def = wrap_filetypes($medium['filetype']);
 	if (empty($filetype_def['thumbnail'])) return;
 
