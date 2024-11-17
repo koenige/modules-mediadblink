@@ -12,3 +12,4 @@
 
 
 /* 2024-08-28-1 */	UPDATE _settings SET setting_key = 'mediadblink_no_preview_classes' WHERE setting_key = 'mediadblink_no_preview_categories';
+/* 2024-11-17-1 */	DELETE FROM _settings WHERE setting_key = 'mediadblink_use_local';
