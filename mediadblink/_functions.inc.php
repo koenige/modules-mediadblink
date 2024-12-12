@@ -56,7 +56,7 @@ function mf_mediadblink_media_get($identifier, $filter = [], $class = '', $ids =
 			, wrap_setting('mediadblink_access_token')
 		);
 	}
-	require_once wrap_setting('core').'/syndication.inc.php';
+	wrap_include('syndication', 'zzwrap');
 	$media = wrap_syndication_get($url, 'json', $settings);
 	unset($media['_']); // metadata
 	if (!$media) return [];
