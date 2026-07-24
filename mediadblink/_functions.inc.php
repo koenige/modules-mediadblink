@@ -88,7 +88,7 @@ function mf_mediadblink_media_report_missing($medium) {
 	$filetype_def = wrap_filetypes($medium['filetype']);
 	if (empty($filetype_def['thumbnail'])) return;
 
-	wrap_error(sprintf('Preview images missing in Media Database for object ID %d, identifier %s', $medium['object_id'], $medium['identifier']));
+	wrap_error(['Preview images missing in Media Database for object ID %d, identifier %s', ['values' => [$medium['object_id'], $medium['identifier']]]]);
 }
 
 /**
